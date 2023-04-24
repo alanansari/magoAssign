@@ -2,7 +2,9 @@ const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const cors=require('cors');
+const userRoutes = require('./routes/userRoutes');
 const urlRoutes = require('./routes/urlRoutes');
+const {errorMiddleware} = require('./middleware/errors');
 
 const app = express();
 app.use(express.json());
@@ -17,4 +19,5 @@ mongoose.connect(process.env.DB_URI)
     console.log(err);
 });
 
-app.use('/api',urlRoutes);
+app.use('/api',userRoutes,errorMiddleware);
+app.use('/',urlRoutes,errorMiddleware);
