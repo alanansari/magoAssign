@@ -21,7 +21,8 @@ const see = async(req,res,next) => {
         else{
             const url = await Url.findOne({shortUrl:`${base}/${urlId}`});
             if(url){
-                await client.setEx(url.shortUrl,EXPIRATION,url.originalUrl);
+                
+                await client.setEx(url.shortUrl,60*60,url.originalUrl);
                 await client.disconnect();
                 return res.status(200).redirect(url.originalUrl);
             }
