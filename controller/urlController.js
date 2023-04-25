@@ -7,7 +7,7 @@ const shortid = require('shortid');
 const Redis = require('redis');
 const client = Redis.createClient();
 
-const EXPIRATION = 10;
+const EXPIRATION = process.env.EXPIRATION;
 
 const see = async(req,res,next) => {
     try {
