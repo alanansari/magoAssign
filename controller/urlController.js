@@ -4,15 +4,32 @@ const {validateUrl} = require('../utils/validation');
 require('dotenv').config();
 const base = process.env.BASE;
 const shortid = require('shortid');
+const Redis = require('redis');
+const client = Redis.createClient();
+
+const EXPIRATION = 10;
 
 const see = async(req,res,next) => {
     try {
         const {urlId} = req.params;
-        const url = await Url.findOne({shortUrl:`${base}/${urlId}`});
-        if(url)
-            return res.redirect(url.originalUrl);
-        else
-            return next(400,"Url not found");
+        await client.connect();
+        const value = await client.get(`${base}/${urlId}`);
+        if(value){
+            await client.disconnect();
+            return res.status(200).redirect(value);
+        }
+        else{
+            const url = await Url.findOne({shortUrl:`${base}/${urlId}`});
+            if(url){
+                await client.setEx(url.shortUrl,EXPIRATION,url.originalUrl);
+                await client.disconnect();
+                return res.status(200).redirect(url.originalUrl);
+            }
+            else{
+                await client.disconnect();
+                return next(400,"Url not found");
+            }
+        }
     } catch (err) {
         next(err);
     }
