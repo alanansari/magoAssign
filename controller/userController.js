@@ -8,6 +8,14 @@ const Otp = require("../models/otpModel");
 const { ErrorHandler } = require('../middleware/errors');
 const {validatemail,validatepass} = require('../utils/validation');
 
+const test = async (req,res,next) => {
+    try {
+        res.status(200).json({success:true,msg:"Welcome to Shortify!"});
+    } catch (err) {
+        next(err);
+    }
+}
+
 const login = async (req, res, next) => {
     try{
         let {
@@ -135,5 +143,6 @@ const signup = async (req,res,next) => {
 module.exports = {
     login,
     email,
-    signup
+    signup,
+    test
 }
