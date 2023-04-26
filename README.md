@@ -10,6 +10,7 @@ should display: {"success":true,"msg":"Welcome to Shortify!"}
 - Authentication APIs: Sign-in, Sign-up, Sign-out. Usage of JSON Web Tokens
 - Authorization: Protected routes for access to resources.
 - Error Handling: Anything breaks: the errors should be carefully handled
+- Rate Limiting: A user will only be allowed to create a maximum of 10 short URLs per hour
 - Deploy the server on AWS EC2 (use t2.micro - the free instance type)
 
 
