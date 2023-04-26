@@ -7,8 +7,6 @@ const shortid = require('shortid');
 const Redis = require('redis');
 const client = Redis.createClient();
 
-const EXPIRATION = process.env.EXPIRATION;
-
 const see = async(req,res,next) => {
     try {
         const {urlId} = req.params;
@@ -62,7 +60,17 @@ const short = async(req,res,next) => {
     }
 }
 
+const myurls = async (req,res,next) => {
+    try {
+        const user = req.user;
+        
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     see,
-    short
+    short,
+    myurls
 }
