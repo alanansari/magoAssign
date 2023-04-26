@@ -19,7 +19,7 @@ should display: {"success":true,"msg":"Welcome to Shortify!"}
 1. Clone the repository:
 
 ```CMD
-git clone https://github.com/alanansari/TaxAddaAssign.git
+git clone https://github.com/alanansari/magoAssign.git
 ```
 To run the server, you need to have NodeJS installed on your machine. If you don't have it installed, you can follow the instructions [here](https://nodejs.org/en//) to install it.
 
