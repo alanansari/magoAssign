@@ -26,7 +26,7 @@ const see = async(req,res,next) => {
             }
             else{
                 await client.disconnect();
-                return next(400,"Url not found");
+                return next(new ErrorHandler(400,"Url not found"));
             }
         }
     } catch (err) {
