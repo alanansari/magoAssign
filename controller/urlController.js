@@ -30,7 +30,7 @@ const see = async(req,res,next) => {
             }
         }
     } catch (err) {
-        next(err);
+        return next(err);
     }
 }
 
@@ -52,25 +52,16 @@ const short = async(req,res,next) => {
         let userurls = user.urls;
         const set = new Set([...userurls,url._id]);
         user.urls = [...set];
+        await user.save();
         
         return res.status(201).json({success:true,msg:"Created short url",url:url.shortUrl});
         
     } catch (err) {
-        next(err);
-    }
-}
-
-const myurls = async (req,res,next) => {
-    try {
-        const user = req.user;
-        
-    } catch (err) {
-        next(err);
+        return next(err);
     }
 }
 
 module.exports = {
     see,
-    short,
-    myurls
+    short
 }

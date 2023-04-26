@@ -16,6 +16,17 @@ const test = async (req,res,next) => {
     }
 }
 
+const myurls = async (req,res,next) => {
+    try {
+        const user = req.user;
+        await user.populate('urls');
+        const urls = user.urls;
+        res.status(200).json({success:true,urls});
+    } catch (err) {
+        next(err);
+    }
+}
+
 const login = async (req, res, next) => {
     try{
         let {
@@ -144,5 +155,6 @@ module.exports = {
     login,
     email,
     signup,
-    test
+    test,
+    myurls
 }

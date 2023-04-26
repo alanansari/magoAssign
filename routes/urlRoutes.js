@@ -10,7 +10,6 @@ const limiter = rateLimit({
 	standardHeaders: true,
 	legacyHeaders: false
 })
-
 router.get('/:urlId',urlController.see);
 router.post('/short',limiter,auth,urlController.short);
 

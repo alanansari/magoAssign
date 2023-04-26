@@ -112,3 +112,21 @@ node index.js
     "url": "http://65.2.180.248:8080/Yv6ObA1c0"
 }
 ```
+### List of Logged In Users short url's : GET request
+```url
+<base>/api/myurls
+```
+```
+// Example JSON response body:
+{
+    "success": true,
+    "urls": [
+        {
+            "_id": "64488b53308339b036d62b04",
+            "shortUrl": "http://localhost:8080/gq3ajEi2s",
+            "originalUrl": "https://www.youtube.com/watch?v=cqGjhVJWtEg",
+            "__v": 0
+        }
+    ]
+}
+```
