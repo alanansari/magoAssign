@@ -1,3 +1,4 @@
+const User = require("../models/userModel");
 const Url = require("../models/urlModel");
 const { ErrorHandler } = require('../middleware/errors');
 const {validateUrl} = require('../utils/validation');
@@ -7,7 +8,7 @@ const shortid = require('shortid');
 const Redis = require('redis');
 const client = Redis.createClient();
 
-const see = async(req,res,next) => {
+const redirectToSite = async(req,res,next) => {
     try {
         const {urlId} = req.params;
         await client.connect();
@@ -17,10 +18,10 @@ const see = async(req,res,next) => {
             return res.status(200).redirect(value);
         }
         else{
-            const url = await Url.findOne({shortUrl:`${base}/${urlId}`});
+            const url = await Url.findOne({shortUrlId:`${urlId}`});
             if(url){
                 
-                await client.setEx(url.shortUrl,60*60,url.originalUrl);
+                await client.setEx(url.shortUrlId,60*60,url.originalUrl);
                 await client.disconnect();
                 return res.status(200).redirect(url.originalUrl);
             }
@@ -34,18 +35,33 @@ const see = async(req,res,next) => {
     }
 }
 
-const short = async(req,res,next) => {
+const generateShortUrl = async(req,res,next) => {
     try {
         const {originalUrl} = req.body;
         const user = req.user;
 
-        if(!validateUrl(originalUrl))
-            return next(new ErrorHandler(406,"Wrong url format"));
+        // if(!validateUrl(originalUrl))
+        //     return next(new ErrorHandler(406,"Wrong url format"));
+        const thisuser = await User.findById(user._id).populate('urls');
         
+        
+        for(const url in thisuser.urls){
+            if(thisuser.urls[url].originalUrl===originalUrl){
+                return res.status(200).
+                json({
+                    success:true,
+                    msg:"A short url for this url already exists",
+                    url:`${base}/${thisuser.urls[url].shortUrlId}`});
+            }
+        }
+        
+        
+        
+
         const urlId = shortid.generate();
 
         const url = await Url.create({
-            shortUrl:   `${base}/${urlId}`,
+            shortUrlId:   `${urlId}`,
             originalUrl
         });
 
@@ -54,7 +70,7 @@ const short = async(req,res,next) => {
         user.urls = [...set];
         await user.save();
         
-        return res.status(201).json({success:true,msg:"Created short url",url:url.shortUrl});
+        return res.status(201).json({success:true,msg:"Created short url",url:`${base}/${url.shortUrlId}`});
         
     } catch (err) {
         return next(err);
@@ -62,6 +78,6 @@ const short = async(req,res,next) => {
 }
 
 module.exports = {
-    see,
-    short
+    redirectToSite,
+    generateShortUrl
 }

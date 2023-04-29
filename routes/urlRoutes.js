@@ -9,8 +9,9 @@ const limiter = rateLimit({
 	max: 10,
 	standardHeaders: true,
 	legacyHeaders: false
-})
-router.get('/:urlId',urlController.see);
-router.post('/short',limiter,auth,urlController.short);
+});
+
+router.get('/:urlId',urlController.redirectToSite);
+router.post('/short',limiter,auth,urlController.generateShortUrl);
 
 module.exports = router;

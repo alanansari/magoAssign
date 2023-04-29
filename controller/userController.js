@@ -116,16 +116,20 @@ const signup = async (req,res,next) => {
         email = email.toLowerCase();
 
         if(!validatepass(password)){
-            return next(new ErrorHandler(400,"Incorrect Password Format"));
+            return next(new ErrorHandler(400,
+                "Incorrect Password Format -> Must contain minimum 6 characters including 1 Uppercase, 1 lowercase and 1 special character"));
         }
 
-        const otpdb = Otp.findOne({email});
+        const otpdb = await Otp.findOne({email:email.toLowerCase()});
         
         if(!otpdb)
             return next(new ErrorHandler(400,"Otp for mail expired resend otp"));
         
         if(otpdb.used)
             return next(new ErrorHandler(400,"Otp already used try later"));
+
+        if(otpdb.otp!=otp)
+            return next(new ErrorHandler(400,"Wrong Otp entered"));
         
         const encryptedPassword = await bcrypt.hash(password, 12);
 

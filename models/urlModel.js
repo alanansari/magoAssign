@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
+const {ObjectId} = require("mongodb");
 
 const urlSchema = mongoose.Schema({
-    shortUrl:{
+    user:{
+      type:ObjectId
+    },
+    shortUrlId:{
         type:String,
         required:true,
         unique:true
