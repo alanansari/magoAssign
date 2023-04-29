@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const otpGenerator = require('otp-generator');
 const mailer = require("../utils/mailer");
 require('dotenv').config();
+const base = process.env.BASE;
 const User = require("../models/userModel");
 const Otp = require("../models/otpModel");
 const { ErrorHandler } = require('../middleware/errors');
@@ -21,7 +22,14 @@ const myurls = async (req,res,next) => {
         const user = req.user;
         await user.populate('urls');
         const urls = user.urls;
-        res.status(200).json({success:true,urls});
+        let newUrlArray=[];
+        for(const idx in urls){
+            const obj = {};
+            obj.shortUrl = `${base}/${urls[idx].shortUrlId}`
+            obj.originalUrl = urls[idx].originalUrl;
+            newUrlArray.push(obj);
+        }
+        res.status(200).json({success:true,urls:newUrlArray});
     } catch (err) {
         next(err);
     }
