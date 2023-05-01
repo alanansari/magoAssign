@@ -39,7 +39,7 @@ const login = async (req, res, next) => {
     try{
         let {
             email,
-            password 
+            password
         } = req.body;
 
         if(!email||!password)
@@ -122,6 +122,12 @@ const signup = async (req,res,next) => {
             return next(new ErrorHandler(400,"All input fields required -> name,email,otp,password"));
         
         email = email.toLowerCase();
+
+        if(!(name.length>=3))
+            return next(new ErrorHandler(406,"name must be greater than or equal to 3 letters"));
+
+        if(!validatemail(email))
+            return next(new ErrorHandler(406,"Incorrect Email format."));
 
         if(!validatepass(password)){
             return next(new ErrorHandler(400,
