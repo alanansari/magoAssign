@@ -1,16 +1,11 @@
 # Shortify
 
-### EC2 hosted server base url: [http://65.2.180.248:8080](http://65.2.180.248:8080)
- 
-test get request api: [http://65.2.180.248:8080/api/test](http://65.2.180.248:8080/api/test)
-
-should display: {"success":true,"msg":"Welcome to Shortify!"}
+URL Shortner
 
 ### Features
 - Authentication APIs: Sign-in, Sign-up, Sign-out. Usage of JSON Web Tokens
 - Authorization: Protected routes for access to resources.
 - Rate Limiting: A user will only be allowed to create a maximum of 10 short URLs per hour
-- Deploy the server on AWS EC2 (use t2.micro - the free instance type)
 - Redis Sever : For caching
 - Error Handling
 
@@ -31,6 +26,12 @@ To run the server, you need to have NodeJS installed on your machine. If you don
 
 ```CMD
 npm install
+```
+
+3. Install Redis Server: 
+
+```CMD
+sudo apt-get install redis-server
 ```
 
 
